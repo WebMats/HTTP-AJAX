@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../axios-friends';
 
 import './FriendForm.css';
 
@@ -22,7 +22,7 @@ class FriendForm extends Component {
             age: this.ageInput.current.value,
             email: this.emailInput.current.value
         }
-        axios.post('http://localhost:5000/friends', newFriend).then(res => {
+        axios.post('', newFriend).then(res => {
             this.props.addFriend(res.data)
             this.nameInput.current.value = "";
             this.ageInput.current.value = "";
@@ -41,11 +41,11 @@ class FriendForm extends Component {
         }
         let trimmedUpdate = {};
         Object.keys(fullUpdate).forEach(key => {
-            if (fullUpdate[key]!== '') {
+            if (fullUpdate[key] !== '') {
                 trimmedUpdate[key] = fullUpdate[key];
             }
         })
-        axios.put(`http://localhost:5000/friends/${this.props.updateId}`, trimmedUpdate).then(res => {
+        axios.put(`/${this.props.updateId}`, trimmedUpdate).then(res => {
             this.props.updateFriend(res.data);
             this.nameInput.current.value = "";
             this.ageInput.current.value = "";

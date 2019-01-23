@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import FriendsList from './components/FriendsList';
 import FriendForm from './components/FriendForm';
-import axios from 'axios';
+import axios from './axios-friends';
 
 class App extends Component {
   state = {
@@ -11,15 +11,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:5000/friends').then(res => {
+    axios.get('').then(res => {
       this.setState({friends: res.data})
     }).catch(err => {
       console.log(err)
     })
-  }
-
-  addFriendToList = (newFriendsList) => {
-    this.setState({friends: newFriendsList});
   }
 
   initUpdateHandler = (idFriend) => {
@@ -30,8 +26,13 @@ class App extends Component {
       return {toUpdateId: idFriend}
     })
   }
-  updateFriendHandler = () => {
-
+  
+  deleteFriendHandler = (idFriend) => {
+    axios.delete(`/${idFriend}`).then(res => {
+      this.setState({friends: res.data, toUpdateId: null})
+    }).catch(err => {
+      console.log(err)
+    });
   }
 
   render() {
@@ -40,13 +41,14 @@ class App extends Component {
         {this.state.friends.length > 0 ? <FriendsList 
                                             updateId={this.state.toUpdateId} 
                                             initUpdate={this.initUpdateHandler} 
-                                            friends={this.state.friends} 
+                                            friends={this.state.friends}
+                                            deleteFriend={this.deleteFriendHandler} 
                                           /> : <p>Loading...</p>}
         <FriendForm 
           updateId={this.state.toUpdateId} 
           currentFriends={this.state.friends} 
           addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
-          updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})} 
+          updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})}
         />
       </div>
     );
