@@ -32,10 +32,33 @@ class FriendForm extends Component {
         });
     }
 
+    updateFriendHandler = (e) => {
+        e.preventDefault();
+        const fullUpdate = {
+            name: this.nameInput.current.value,
+            age: this.ageInput.current.value,
+            email: this.emailInput.current.value
+        }
+        let trimmedUpdate = {};
+        Object.keys(fullUpdate).forEach(key => {
+            if (fullUpdate[key]!== '') {
+                trimmedUpdate[key] = fullUpdate[key];
+            }
+        })
+        axios.put(`http://localhost:5000/friends/${this.props.updateId}`, trimmedUpdate).then(res => {
+            this.props.updateFriend(res.data);
+            this.nameInput.current.value = "";
+            this.ageInput.current.value = "";
+            this.emailInput.current.value = "";
+        }).catch(err => {
+            console.log(err)
+        });
+    }
+
     render(){
 
         return(
-            <form onSubmit={this.addFriendHandler} className="AddFriendForm" autoComplete="off">
+            <form onSubmit={this.props.updateId !== null ? this.updateFriendHandler : this.addFriendHandler} className="AddFriendForm" autoComplete="off">
                 <div className="Row-1">
                     <div className="Col-1-Of-2">
                         <label htmlFor="name">Name</label>

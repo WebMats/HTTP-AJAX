@@ -17,9 +17,11 @@ class App extends Component {
       console.log(err)
     })
   }
+
   addFriendToList = (newFriendsList) => {
     this.setState({friends: newFriendsList});
   }
+
   initUpdateHandler = (idFriend) => {
     this.setState(prevState => {
       if(prevState.toUpdateId === idFriend) {
@@ -28,12 +30,24 @@ class App extends Component {
       return {toUpdateId: idFriend}
     })
   }
+  updateFriendHandler = () => {
+
+  }
 
   render() {
     return (
       <div className="App">
-        {this.state.friends.length > 0 ? <FriendsList updateId={this.state.toUpdateId} initUpdate={this.initUpdateHandler} friends={this.state.friends} /> : <p>Loading...</p>}
-        <FriendForm updateId={this.state.toUpdateId} currentFriends={this.state.friends} addFriend={this.addFriendToList} />
+        {this.state.friends.length > 0 ? <FriendsList 
+                                            updateId={this.state.toUpdateId} 
+                                            initUpdate={this.initUpdateHandler} 
+                                            friends={this.state.friends} 
+                                          /> : <p>Loading...</p>}
+        <FriendForm 
+          updateId={this.state.toUpdateId} 
+          currentFriends={this.state.friends} 
+          addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
+          updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})} 
+        />
       </div>
     );
   }
