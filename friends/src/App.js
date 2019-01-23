@@ -16,12 +16,15 @@ class App extends Component {
       console.log(err)
     })
   }
+  addFriendToList = (newFriendsList) => {
+    this.setState({friends: newFriendsList});
+  }
 
   render() {
     return (
       <div className="App">
         {this.state.friends.length > 0 ? <FriendsList friends={this.state.friends} /> : <p>Loading...</p>}
-        <FriendForm />
+        <FriendForm addFriend={this.addFriendToList} />
       </div>
     );
   }

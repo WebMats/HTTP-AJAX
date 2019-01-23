@@ -1,0 +1,52 @@
+.AddFriendForm {
+    border: 1px solid #C0C0C0;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 80%;
+    margin: 1rem auto;
+    padding: 2rem;
+}
+
+.AddFriendForm .Row-1 {
+    display: flex;
+    font-size: 1.6rem;
+    margin: 1rem 0;
+    text-align: left;
+}
+.AddFriendForm label,
+.AddFriendForm input {
+    display: block;
+    margin: 2px 0;
+}
+
+.AddFriendForm .Row-1 > .Col-1-Of-2 input {
+    width: 25rem;
+    height: 2.5rem;
+    margin-right: 2rem;
+}
+.AddFriendForm .Row-1 > .Col-2-Of-2 input {
+    height: 2.5rem;
+}
+.AddFriendForm .Row-2 {
+    align-self: center;
+    text-align: left;
+    font-size: 1.6rem;
+    padding-left: 8rem;
+}
+
+.AddFriendForm .Row-2 > input {
+    width: 25rem;
+    height: 2.5rem;
+    margin-right: 2rem;
+}
+
+.AddFriendButton {
+    margin-top: 1rem;
+    height: 3.5rem;
+    width: 14rem;
+    background-color: rgb(37, 179, 155);
+    color: white;
+    border: 1px solid rgb(37, 179, 155);
+    border-radius: 3px;
+    font-size: 1.6rem;
+}
