@@ -50,7 +50,7 @@ class FriendForm extends Component {
                     <label htmlFor="email">Email</label>
                     <input id="email" type="email" ref={this.emailInput} />
                 </div>
-                <button className="AddFriendButton">Submit</button>
+                {this.props.updateId === null ? <button className="AddFriendButton">Submit</button> : <button className="UpdateFriendButton">Update</button>}
             </form>
         )
     }

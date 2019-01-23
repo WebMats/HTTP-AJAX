@@ -6,7 +6,8 @@ import axios from 'axios';
 
 class App extends Component {
   state = {
-    friends: []
+    friends: [],
+    toUpdateId: null
   }
 
   componentDidMount() {
@@ -19,12 +20,20 @@ class App extends Component {
   addFriendToList = (newFriendsList) => {
     this.setState({friends: newFriendsList});
   }
+  initUpdateHandler = (idFriend) => {
+    this.setState(prevState => {
+      if(prevState.toUpdateId === idFriend) {
+        return {toUpdateId: null}
+      }
+      return {toUpdateId: idFriend}
+    })
+  }
 
   render() {
     return (
       <div className="App">
-        {this.state.friends.length > 0 ? <FriendsList friends={this.state.friends} /> : <p>Loading...</p>}
-        <FriendForm addFriend={this.addFriendToList} />
+        {this.state.friends.length > 0 ? <FriendsList updateId={this.state.toUpdateId} initUpdate={this.initUpdateHandler} friends={this.state.friends} /> : <p>Loading...</p>}
+        <FriendForm updateId={this.state.toUpdateId} currentFriends={this.state.friends} addFriend={this.addFriendToList} />
       </div>
     );
   }
