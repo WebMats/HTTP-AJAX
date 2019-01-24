@@ -8,7 +8,8 @@ import axios from './axios-friends';
 class App extends Component {
   state = {
     friends: [],
-    toUpdateId: null
+    toUpdateId: null,
+    detailsId: null
   }
 
   componentDidMount() {
@@ -25,6 +26,14 @@ class App extends Component {
         return {toUpdateId: null}
       }
       return {toUpdateId: idFriend}
+    })
+  }
+  expandDetailsHandler = (id) => {
+    this.setState(prevState => {
+      if(prevState.detailsId === id) {
+        return {detailsId: null}
+      }
+      return {detailsId: id}
     })
   }
   
@@ -44,7 +53,9 @@ class App extends Component {
           <Route path="/friends" render={(props) => (<FriendsList
                                             {...props} 
                                             updateId={this.state.toUpdateId} 
-                                            initUpdate={this.initUpdateHandler} 
+                                            initUpdate={this.initUpdateHandler}
+                                            expandDetails={this.expandDetailsHandler}
+                                            showDetails={this.state.detailsId} 
                                             friends={this.state.friends}
                                             deleteFriend={this.deleteFriendHandler} 
                                           />)} />
