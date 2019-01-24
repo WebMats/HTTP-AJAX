@@ -24,12 +24,10 @@ class FriendForm extends Component {
         }
         axios.post('', newFriend).then(res => {
             this.props.addFriend(res.data)
-            this.nameInput.current.value = "";
-            this.ageInput.current.value = "";
-            this.emailInput.current.value = "";
         }).catch(err => {
             console.log(err)
         });
+        this.props.history.push("/friends")
     }
 
     updateFriendHandler = (e) => {
@@ -47,12 +45,10 @@ class FriendForm extends Component {
         })
         axios.put(`/${this.props.updateId}`, trimmedUpdate).then(res => {
             this.props.updateFriend(res.data);
-            this.nameInput.current.value = "";
-            this.ageInput.current.value = "";
-            this.emailInput.current.value = "";
         }).catch(err => {
             console.log(err)
         });
+        this.props.history.push("/friends")
     }
 
     render(){

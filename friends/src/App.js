@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import FriendsList from './components/FriendsList';
 import FriendForm from './components/FriendForm';
 import axios from './axios-friends';
@@ -38,18 +39,24 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.friends.length > 0 ? <FriendsList 
+        <Switch>
+          <Redirect from="/" exact to="/friends" />
+          <Route path="/friends" render={(props) => (<FriendsList
+                                            {...props} 
                                             updateId={this.state.toUpdateId} 
                                             initUpdate={this.initUpdateHandler} 
                                             friends={this.state.friends}
                                             deleteFriend={this.deleteFriendHandler} 
-                                          /> : <p>Loading...</p>}
-        <FriendForm 
-          updateId={this.state.toUpdateId} 
-          currentFriends={this.state.friends} 
-          addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
-          updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})}
-        />
+                                          />)} />
+          <Route path={["/new-friend", "/update-friend"]} render={(props) => (<FriendForm 
+                                            {...props} 
+                                            updateId={this.state.toUpdateId} 
+                                            currentFriends={this.state.friends} 
+                                            addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
+                                            updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})}
+                                          />)} />
+          <Redirect to="/" />
+        </Switch>
       </div>
     );
   }

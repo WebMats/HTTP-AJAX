@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './FriendList.css';
 
 const friendsList = (props) => (
@@ -19,7 +18,9 @@ const friendsList = (props) => (
                                                 >{props.updateId === friend.id ? "Cancel" : "Update"}
                                                 </span>
                                             </p>)}
+                {props.updateId === null ? <button type="button" onClick={() => props.history.push("/new-friend")} className="AddButton">Add New Friend</button> : 
+            <button type="button" onClick={() => props.history.push("/update-friend")} className="AddButton">Update Friend</button>}
             </div>
-        )
+        );
 
 export default friendsList;
