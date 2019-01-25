@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import FriendsList from './components/FriendsList';
 import FriendForm from './components/FriendForm';
 import axios from './axios-friends';
+import FriendsContext from './context//friends-context';
 
 class App extends Component {
   state = {
     friends: [],
-    toUpdateId: null
+    toUpdateId: null,
+    detailsId: null
   }
 
   componentDidMount() {
@@ -18,17 +21,25 @@ class App extends Component {
     })
   }
 
-  initUpdateHandler = (idFriend) => {
+  initUpdateHandler = (id) => {
     this.setState(prevState => {
-      if(prevState.toUpdateId === idFriend) {
+      if(prevState.toUpdateId === id) {
         return {toUpdateId: null}
       }
-      return {toUpdateId: idFriend}
+      return {toUpdateId: id}
+    })
+  }
+  expandDetailsHandler = (id) => {
+    this.setState(prevState => {
+      if(prevState.detailsId === id) {
+        return {detailsId: null}
+      }
+      return {detailsId: id}
     })
   }
   
-  deleteFriendHandler = (idFriend) => {
-    axios.delete(`/${idFriend}`).then(res => {
+  deleteFriendHandler = (id) => {
+    axios.delete(`/${id}`).then(res => {
       this.setState({friends: res.data, toUpdateId: null})
     }).catch(err => {
       console.log(err)
@@ -38,18 +49,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.state.friends.length > 0 ? <FriendsList 
-                                            updateId={this.state.toUpdateId} 
-                                            initUpdate={this.initUpdateHandler} 
-                                            friends={this.state.friends}
-                                            deleteFriend={this.deleteFriendHandler} 
-                                          /> : <p>Loading...</p>}
-        <FriendForm 
-          updateId={this.state.toUpdateId} 
-          currentFriends={this.state.friends} 
-          addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
-          updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})}
-        />
+        <FriendsContext.Provider value={{friends: this.state.friends, updateId: this.state.toUpdateId, 
+                                        detailsId: this.state.detailsId, initUpdate: this.initUpdateHandler, 
+                                        expandDetails: this.expandDetailsHandler, deleteFriend: this.deleteFriendHandler}}>
+          <Switch>
+            <Redirect from="/" exact to="/friends" />
+            <Route path="/friends" component={FriendsList} />
+            <Route path={["/new-friend", "/update-friend"]} render={(props) => (<FriendForm 
+                                              {...props}
+                                              addFriend={(newFriendsList) => this.setState({friends: newFriendsList})}
+                                              updateFriend={(newFriendsList) => this.setState({friends: newFriendsList, toUpdateId: null})}
+                                            />)} />
+            <Redirect to="/" />
+          </Switch>
+        </FriendsContext.Provider>
       </div>
     );
   }
